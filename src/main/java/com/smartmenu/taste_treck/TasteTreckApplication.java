@@ -9,5 +9,4 @@ public class TasteTreckApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TasteTreckApplication.class, args);
 	}
-
 }
