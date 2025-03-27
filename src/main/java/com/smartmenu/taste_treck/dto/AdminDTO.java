@@ -1,0 +1,8 @@
+package com.smartmenu.taste_treck.dto;
+
+import org.bson.types.ObjectId;
+
+import java.time.LocalDateTime;
+
+public record AdminDTO(ObjectId adminId, String username, String password, String email, String phone, String address, String role, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+}
