@@ -1,4 +1,4 @@
-package com.smartmenu.taste_treck.entity;
+package com.smartmenu.taste_trek.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,18 +9,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "customer")
+@Document(collection = "admin")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+public class Admin {
     @Id
-    private ObjectId customerId;
-    private String firstName;
-    private String lastName;
-    private String phone;
+    private ObjectId adminId;
+    private String username;
+    private String password;
     private String email;
-    private LocalDateTime birthday;
+    private String phone;
+    private String address;
+    private String role;
     private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

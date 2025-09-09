@@ -1,8 +1,8 @@
-package com.smartmenu.taste_treck.service;
+package com.smartmenu.taste_trek.service;
 
-import com.smartmenu.taste_treck.dto.CustomerDTO;
-import com.smartmenu.taste_treck.entity.Customer;
-import com.smartmenu.taste_treck.repository.CustomerRepo;
+import com.smartmenu.taste_trek.dto.CustomerDTO;
+import com.smartmenu.taste_trek.entity.Customer;
+import com.smartmenu.taste_trek.repository.CustomerRepo;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 

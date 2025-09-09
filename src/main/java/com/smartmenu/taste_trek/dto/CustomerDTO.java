@@ -1,4 +1,4 @@
-package com.smartmenu.taste_treck.dto;
+package com.smartmenu.taste_trek.dto;
 
 import org.bson.types.ObjectId;
 

@@ -1,14 +1,14 @@
-package com.smartmenu.taste_treck;
+package com.smartmenu.taste_trek;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class TasteTreckApplication {
+public class TasteTrekApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TasteTreckApplication.class, args);
+		SpringApplication.run(TasteTrekApplication.class, args);
 	}
 
 }

@@ -1,9 +1,8 @@
-package com.smartmenu.taste_treck.controller;
+package com.smartmenu.taste_trek.controller;
 
-//import com.smartmenu.taste_treck.dto.AdminDTO;
-import com.smartmenu.taste_treck.dto.AdminDTO;
-import com.smartmenu.taste_treck.dto.AdminResponseDTO;
-import com.smartmenu.taste_treck.service.AdminService;
+//import com.smartmenu.taste_trek.dto.AdminDTO;
+import com.smartmenu.taste_trek.dto.AdminResponseDTO;
+import com.smartmenu.taste_trek.service.AdminService;
 import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.smartmenu.taste_treck.entity.Admin;
+import com.smartmenu.taste_trek.entity.Admin;
 
 import java.util.List;
 import java.util.Optional;

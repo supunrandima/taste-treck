@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.smartmenu</groupId>
-	<artifactId>taste-treck</artifactId>
+	<artifactId>taste-trek</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>taste-treck</name>
+	<name>taste-trek</name>
 	<description>A smart food ordering system for restaurants</description>
 	<url/>
 	<licenses>

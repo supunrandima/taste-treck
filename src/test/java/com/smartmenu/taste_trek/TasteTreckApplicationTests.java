@@ -1,4 +1,4 @@
-package com.smartmenu.taste_treck;
+package com.smartmenu.taste_trek;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,8 +1,8 @@
-package com.smartmenu.taste_treck.controller;
+package com.smartmenu.taste_trek.controller;
 
-import com.smartmenu.taste_treck.dto.CustomerDTO;
-import com.smartmenu.taste_treck.entity.Customer;
-import com.smartmenu.taste_treck.service.CustomerService;
+import com.smartmenu.taste_trek.dto.CustomerDTO;
+import com.smartmenu.taste_trek.entity.Customer;
+import com.smartmenu.taste_trek.service.CustomerService;
 import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;

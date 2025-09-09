@@ -1,9 +1,8 @@
-package com.smartmenu.taste_treck.service;
+package com.smartmenu.taste_trek.service;
 
-import com.smartmenu.taste_treck.dto.AdminDTO;
-import com.smartmenu.taste_treck.dto.AdminResponseDTO;
-import com.smartmenu.taste_treck.entity.Admin;
-import com.smartmenu.taste_treck.repository.AdminRepo;
+import com.smartmenu.taste_trek.dto.AdminResponseDTO;
+import com.smartmenu.taste_trek.entity.Admin;
+import com.smartmenu.taste_trek.repository.AdminRepo;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
