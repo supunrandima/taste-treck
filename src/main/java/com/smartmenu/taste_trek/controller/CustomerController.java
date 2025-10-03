@@ -2,6 +2,7 @@ package com.smartmenu.taste_trek.controller;
 
 import com.smartmenu.taste_trek.dto.CustomerDTO;
 import com.smartmenu.taste_trek.entity.Customer;
+import com.smartmenu.taste_trek.service.AuthenticationService;
 import com.smartmenu.taste_trek.service.CustomerService;
 import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
@@ -12,15 +13,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/customer")
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = "*")
 public class CustomerController {
 
     @Autowired
-    private CustomerService customerService;
+    CustomerService customerService;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     // Get all customers
     @GetMapping(value = "/allCustomers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,6 +43,15 @@ public class CustomerController {
         return customer.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/customerLogin")
+    public ResponseEntity<CustomerDTO> loginCustomer(@RequestBody Map<String, String> payload) {
+        String phone = payload.get("phone");
+        Optional<CustomerDTO> customer = customerService.loginCustomer(phone);
+        return customer.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
+
 
     // Add a new customer
     @PostMapping("/registerCustomer")
@@ -66,4 +80,5 @@ public class CustomerController {
         boolean deleted = customerService.deleteCustomer(new ObjectId(customerId));
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
 }

@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 public record AdminResponseDTO(
         ObjectId adminId,
+        String firstName,
+        String lastName,
         String username,
         String email,
         String phone,

@@ -23,6 +23,8 @@ public class AdminService {
     private AdminResponseDTO mapToResponseDTO(Admin admin) {
         return new AdminResponseDTO(
                 admin.getAdminId(),
+                admin.getFirstName(),
+                admin.getLastName(),
                 admin.getUsername(),
                 admin.getEmail(),
                 admin.getPhone(),

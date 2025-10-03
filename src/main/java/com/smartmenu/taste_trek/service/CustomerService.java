@@ -15,6 +15,7 @@ public class CustomerService {
 
     private final CustomerRepo customerRepo;
 
+
     public CustomerService(CustomerRepo customerRepo) {
         this.customerRepo = customerRepo;
     }
@@ -45,12 +46,17 @@ public class CustomerService {
     public Optional<CustomerDTO> getCustomerById(ObjectId customerId) {
         return customerRepo.findById(customerId).map(this::mapToResponseDTO);
     }
+    public Optional<CustomerDTO> loginCustomer(String phone) {
+        return customerRepo.findByPhone(phone).map(this::mapToResponseDTO);
+    }
 
     // Add a new customer
     public CustomerDTO addCustomer(Customer customer) {
         Customer savedCustomer = customerRepo.save(customer);
         return mapToResponseDTO(savedCustomer);
+
     }
+
 
     // Update an existing customer
     public Optional<CustomerDTO> updateCustomer(ObjectId customerId, Customer customer) {
@@ -70,4 +76,6 @@ public class CustomerService {
         }
         return false;
     }
+
+
 }
