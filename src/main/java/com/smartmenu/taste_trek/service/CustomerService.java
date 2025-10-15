@@ -53,9 +53,19 @@ public class CustomerService {
 
     // Add a new customer
     public CustomerDTO addCustomer(Customer customer) {
+
+        // --- UNIQUENESS CHECK: Phone and Email ---
+        // Assuming CustomerRepo has existsByPhone and existsByEmail methods (which your file history suggests it does).
+        if (customerRepo.existsByPhone(customer.getPhone())) {
+            throw new IllegalArgumentException("Phone number '" + customer.getPhone() + "' is already registered.");
+        }
+        if (customerRepo.existsByEmail(customer.getEmail())) {
+            throw new IllegalArgumentException("Email '" + customer.getEmail() + "' is already registered.");
+        }
+        // ------------------------------------------
+
         Customer savedCustomer = customerRepo.save(customer);
         return mapToResponseDTO(savedCustomer);
-
     }
 
 

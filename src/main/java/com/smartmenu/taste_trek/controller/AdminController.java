@@ -48,12 +48,20 @@ public class AdminController {
     }
 
     // ✅ Register a new admin (with password encryption)
-    @PostMapping("/adminRegister")
-    public ResponseEntity<AdminResponseDTO> registerAdmin(@Valid @RequestBody Admin admin) {
-        // Encrypt password before saving
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        AdminResponseDTO newAdmin = adminService.addAdmin(admin);
-        return new ResponseEntity<>(newAdmin, HttpStatus.CREATED);
+    @PostMapping("/registerAdmin")
+    public ResponseEntity<?> registerAdmin(@Valid @RequestBody Admin admin) {
+        try {
+            // Ensure the password encryption happens AFTER validation,
+            // but BEFORE saving. The service layer handles this now.
+            AdminResponseDTO newAdmin = adminService.addAdmin(admin);
+            return new ResponseEntity<>(newAdmin, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            // Catch the exception thrown by the service for duplicates
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            // Return 400 Bad Request or 409 Conflict
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
     }
 
     // ✅ Update an existing admin

@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Allow POST for registration and login endpoints to be accessed by anyone
                         .requestMatchers("/api/v1/customer/registerCustomer", "/api/v1/customer/customerLogin").permitAll()
-                        .requestMatchers("/api/v1/admin/adminRegister", "/api/v1/admin/adminLogin").permitAll()
+                        .requestMatchers("/api/v1/admin/registerAdmin", "/api/v1/admin/adminLogin").permitAll()
                         // You might also want to allow actuator endpoints for health checks
                         .requestMatchers("/", "/health").permitAll()
                         // Secure all other API endpoints

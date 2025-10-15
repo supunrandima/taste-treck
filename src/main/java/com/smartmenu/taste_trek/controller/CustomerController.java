@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -66,9 +67,17 @@ public class CustomerController {
 
     //Register a new customer
     @PostMapping("/registerCustomer")
-    public ResponseEntity<CustomerDTO> addCustomer(@Valid @RequestBody Customer customer) {
-        CustomerDTO newCustomer = customerService.addCustomer(customer);
-        return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
+    public ResponseEntity<?> addCustomer(@Valid @RequestBody Customer customer) {
+        try {
+            CustomerDTO newCustomer = customerService.addCustomer(customer);
+            return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            // Catch the exception thrown by the service for duplicates (phone/email)
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            // Return 400 Bad Request to indicate a client-side data issue (duplicate value)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
     }
 
     //Update an existing customer

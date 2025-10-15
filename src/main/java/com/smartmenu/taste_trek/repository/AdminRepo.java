@@ -10,4 +10,7 @@ import java.util.Optional;
 @Repository
 public interface AdminRepo extends MongoRepository<Admin, ObjectId> {
     Optional<Admin> findByUserId(String userId);
+
+    Optional<Admin> findByEmail(String email);
+    Optional<Admin> findByPhone(String phone);
 }

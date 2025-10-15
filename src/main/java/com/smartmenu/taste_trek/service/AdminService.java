@@ -54,6 +54,19 @@ public class AdminService {
 
     // Add a new admin (encrypt password)
     public AdminResponseDTO addAdmin(Admin admin) {
+
+        // --- LAYER 1: Existence Checks for Uniqueness ---
+        if (adminRepo.findByUserId(admin.getUserId()).isPresent()) {
+            throw new IllegalArgumentException("User ID '" + admin.getUserId() + "' is already taken.");
+        }
+        if (adminRepo.findByEmail(admin.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email '" + admin.getEmail() + "' is already registered.");
+        }
+        if (adminRepo.findByPhone(admin.getPhone()).isPresent()) {
+            throw new IllegalArgumentException("Phone number '" + admin.getPhone() + "' is already registered.");
+        }
+        // --------------------------------------------------
+
         admin.setPassword(passwordEncoder.encode(admin.getPassword())); // Encrypt password
         Admin savedAdmin = adminRepo.save(admin);
         return mapToResponseDTO(savedAdmin);
