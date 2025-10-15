@@ -4,6 +4,7 @@ import com.smartmenu.taste_trek.dto.AdminResponseDTO;
 import com.smartmenu.taste_trek.entity.Admin;
 import com.smartmenu.taste_trek.repository.AdminRepo;
 import org.bson.types.ObjectId;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,18 +15,19 @@ import java.util.stream.Collectors;
 public class AdminService {
 
     private final AdminRepo adminRepo;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public AdminService(AdminRepo adminRepo) {
         this.adminRepo = adminRepo;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    // map Admin -> AdminResponseDTO (for responses)
+    // Helper: map Admin -> AdminResponseDTO
     private AdminResponseDTO mapToResponseDTO(Admin admin) {
         return new AdminResponseDTO(
                 admin.getAdminId(),
                 admin.getFirstName(),
                 admin.getLastName(),
-                admin.getUsername(),
                 admin.getEmail(),
                 admin.getPhone(),
                 admin.getAddress(),
@@ -38,18 +40,21 @@ public class AdminService {
 
     // Get all admins
     public List<AdminResponseDTO> getAllAdmins() {
-        return adminRepo.findAll().stream()
+        return adminRepo.findAll()
+                .stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
 
     // Get admin by ID
     public Optional<AdminResponseDTO> getAdminById(ObjectId adminId) {
-        return adminRepo.findById(adminId).map(this::mapToResponseDTO);
+        return adminRepo.findById(adminId)
+                .map(this::mapToResponseDTO);
     }
 
-    // Add a new admin
+    // Add a new admin (encrypt password)
     public AdminResponseDTO addAdmin(Admin admin) {
+        admin.setPassword(passwordEncoder.encode(admin.getPassword())); // Encrypt password
         Admin savedAdmin = adminRepo.save(admin);
         return mapToResponseDTO(savedAdmin);
     }
@@ -58,6 +63,12 @@ public class AdminService {
     public Optional<AdminResponseDTO> updateAdmin(ObjectId adminId, Admin admin) {
         if (adminRepo.existsById(adminId)) {
             admin.setAdminId(adminId);
+
+            // Only encode password if it's updated
+            if (admin.getPassword() != null && !admin.getPassword().isEmpty()) {
+                admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+            }
+
             Admin updatedAdmin = adminRepo.save(admin);
             return Optional.of(mapToResponseDTO(updatedAdmin));
         }
@@ -72,5 +83,18 @@ public class AdminService {
         }
         return false;
     }
-}
 
+    // Authenticate admin (for login)
+    public Optional<AdminResponseDTO> authenticateAdmin(String userId, String password) {
+        Optional<Admin> adminOpt = adminRepo.findByUserId(userId);
+
+        if (adminOpt.isPresent()) {
+            Admin admin = adminOpt.get();
+
+            if (passwordEncoder.matches(password, admin.getPassword())) {
+                return Optional.of(mapToResponseDTO(admin));
+            }
+        }
+        return Optional.empty();
+    }
+}

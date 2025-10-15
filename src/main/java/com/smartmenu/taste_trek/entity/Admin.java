@@ -18,7 +18,7 @@ public class Admin {
     private ObjectId adminId;
     private String firstName;
     private String lastName;
-    private String username;
+    private String userId;
     private String password;
     private String email;
     private String phone;

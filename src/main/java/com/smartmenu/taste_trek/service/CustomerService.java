@@ -4,6 +4,7 @@ import com.smartmenu.taste_trek.dto.CustomerDTO;
 import com.smartmenu.taste_trek.entity.Customer;
 import com.smartmenu.taste_trek.repository.CustomerRepo;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,6 @@ import java.util.stream.Collectors;
 public class CustomerService {
 
     private final CustomerRepo customerRepo;
-
 
     public CustomerService(CustomerRepo customerRepo) {
         this.customerRepo = customerRepo;
@@ -34,6 +34,7 @@ public class CustomerService {
                 customer.getUpdatedAt()
         );
     }
+
 
     // Get all customers
     public List<CustomerDTO> getAllCustomers() {

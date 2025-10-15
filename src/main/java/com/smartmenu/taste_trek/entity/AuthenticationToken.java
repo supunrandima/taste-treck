@@ -17,7 +17,7 @@ import java.util.UUID;
 public class AuthenticationToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tokenId;
     private String tokenValue;
     private LocalDateTime tokenCreationDateTime;
@@ -25,6 +25,9 @@ public class AuthenticationToken {
 
     @DBRef
     private Customer customer;
+
+    @DBRef
+    private Admin admin;
 
     //mapping
 //    @OneToOne
@@ -34,6 +37,12 @@ public class AuthenticationToken {
 
     public AuthenticationToken(Customer customer){
         this.customer = customer;
+        this.tokenValue = UUID.randomUUID().toString();
+        this.tokenCreationDateTime = LocalDateTime.now();
+    }
+
+    public AuthenticationToken(Admin admin){
+        this.admin = admin;
         this.tokenValue = UUID.randomUUID().toString();
         this.tokenCreationDateTime = LocalDateTime.now();
     }

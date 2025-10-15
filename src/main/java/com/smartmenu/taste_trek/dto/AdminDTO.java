@@ -9,7 +9,7 @@ public record AdminDTO(
         ObjectId adminId,
         String firstName,
         String lastName,
-        String username,
+        String userId,
         String password,
         String email,
         String phone,

@@ -14,5 +14,6 @@ public record CustomerDTO(
          String status,
          LocalDateTime createdAt,
          LocalDateTime updatedAt
+
 ) {
 }
