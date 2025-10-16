@@ -18,7 +18,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/admin")
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = "*")
 public class AdminController {
 
     @Autowired
@@ -88,22 +88,41 @@ public class AdminController {
     // ✅ Admin login (with token generation)
     @PostMapping("/adminLogin")
     public ResponseEntity<?> loginAdmin(@RequestBody Map<String, String> loginRequest) {
+
+        // Ensure keys match the frontend payload (userId, password)
         String userId = loginRequest.get("userId");
-//        String password = loginRequest.get("password");
+        String password = loginRequest.get("password");
+
+        if (userId == null || password == null) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Missing userId or password in request.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
 
         try {
+            // 1. Authenticate the admin using AdminService (checks password)
+            Optional<AdminResponseDTO> authenticatedAdminOpt = adminService.authenticateAdmin(userId, password);
+
+            if (authenticatedAdminOpt.isEmpty()) {
+                throw new RuntimeException("Invalid User ID or password.");
+            }
+
+            // 2. If successful, generate the authentication token
             AuthenticationToken token = authenticationService.generateTokenForAdmin(userId);
+            AdminResponseDTO admin = authenticatedAdminOpt.get();
 
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Login successful");
             response.put("userId", userId);
             response.put("token", token.getTokenValue());
             response.put("tokenCreationDateTime", token.getTokenCreationDateTime());
+            response.put("firstName", admin.firstName()); // Add first name for frontend welcome message
 
             return ResponseEntity.ok(response);
         } catch (RuntimeException ex) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", ex.getMessage());
+            // Return UNAUTHORIZED (401) for login failure
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
