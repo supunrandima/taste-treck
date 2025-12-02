@@ -69,6 +69,8 @@ public class CustomerController {
     @PostMapping("/registerCustomer")
     public ResponseEntity<?> addCustomer(@Valid @RequestBody Customer customer) {
         try {
+            // FIX: Set timestamps before saving a new customer.
+            customer.setTimestamps();
             CustomerDTO newCustomer = customerService.addCustomer(customer);
             return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {

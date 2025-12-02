@@ -25,14 +25,31 @@ public class SecurityConfig {
 
                 // Permit access to specific endpoints
                 .authorizeHttpRequests(auth -> auth
-                        // Allow POST for registration and login endpoints to be accessed by anyone
+                        // 1. Allow POST for registration and customer login endpoints (public access)
                         .requestMatchers("/api/v1/customer/registerCustomer", "/api/v1/customer/customerLogin").permitAll()
+
+                        // 2. Allow POST for admin registration and login (public access)
                         .requestMatchers("/api/v1/admin/registerAdmin", "/api/v1/admin/adminLogin").permitAll()
-                        // You might also want to allow actuator endpoints for health checks
+
+                        .requestMatchers("/api/v1/admin/menu/allItems", "/api/v1/admin/menu/newMenuItem", "/api/v1/admin/menu/{itemId}").permitAll()
+
+                        .requestMatchers("/api/v1/admin/categories/allCategories", "/api/v1/admin/categories/newCategory", "/api/v1/admin/categories/{categoryId}").permitAll()
+
+                        .requestMatchers("/api/v1/admin/menu/**").permitAll()
+                        .requestMatchers("/api/v1/admin/categories/**").permitAll()
+                        .requestMatchers("/api/v1/staff/**").permitAll()
+
+                        // 3. Allow Actuator endpoints and root path
                         .requestMatchers("/", "/health").permitAll()
-                        // Secure all other API endpoints
+
+                        // FIX: Secure ALL remaining admin routes and any other API path starting with /api/
+                        .requestMatchers("/api/v1/admin/**").authenticated() // Now protects Menu, Category, and Admin CRUD operations
+
+                        // Fallback security for other authenticated APIs
                         .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll() // Fallback: allow all other unmapped requests
+
+                        // Fallback: allow all other unmapped requests (e.g. static files, favicon)
+                        .anyRequest().permitAll()
                 );
 
         return http.build();
