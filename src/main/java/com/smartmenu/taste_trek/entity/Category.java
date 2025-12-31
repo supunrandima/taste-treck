@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Category {
     @Id
-    private ObjectId categoryId;
+    private String categoryId;
 
     @NotBlank(message = "Category Name is required")
     @Indexed(unique = true)

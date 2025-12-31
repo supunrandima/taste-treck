@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Admin {
     @Id
-    private ObjectId adminId;
+    private String adminId;
 
     @NotBlank(message = "First Name is required")
     private String firstName;

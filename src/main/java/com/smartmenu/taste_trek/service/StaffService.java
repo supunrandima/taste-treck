@@ -3,7 +3,6 @@ package com.smartmenu.taste_trek.service;
 import com.smartmenu.taste_trek.dto.StaffResponseDTO;
 import com.smartmenu.taste_trek.entity.Staff;
 import com.smartmenu.taste_trek.repository.StaffRepo;
-import org.bson.types.ObjectId;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class StaffService {
     // Helper: map Staff -> StaffResponseDTO
     private StaffResponseDTO mapToResponseDTO(Staff staff) {
         return new StaffResponseDTO(
-                staff.getId(),
+                staff.getId(), // No conversion needed, it's already String
                 staff.getFirstName(),
                 staff.getLastName(),
                 staff.getStaffId(),
@@ -46,8 +45,8 @@ public class StaffService {
                 .collect(Collectors.toList());
     }
 
-    // Get staff by ID
-    public Optional<StaffResponseDTO> getStaffById(ObjectId id) {
+    // Get staff by ID (String)
+    public Optional<StaffResponseDTO> getStaffById(String id) {
         return staffRepo.findById(id)
                 .map(this::mapToResponseDTO);
     }
@@ -59,7 +58,7 @@ public class StaffService {
         if (staffRepo.findByStaffId(staff.getStaffId()).isPresent()) {
             throw new IllegalArgumentException("Staff ID '" + staff.getStaffId() + "' is already taken.");
         }
-        
+
         if (staffRepo.findByPhone(staff.getPhone()).isPresent()) {
             throw new IllegalArgumentException("Phone number '" + staff.getPhone() + "' is already registered.");
         }
@@ -70,8 +69,8 @@ public class StaffService {
         return mapToResponseDTO(savedStaff);
     }
 
-    // Update an existing staff
-    public Optional<StaffResponseDTO> updateStaff(ObjectId id, Staff staff) {
+    // Update an existing staff (String ID)
+    public Optional<StaffResponseDTO> updateStaff(String id, Staff staff) {
         if (staffRepo.existsById(id)) {
             staff.setId(id);
 
@@ -86,8 +85,8 @@ public class StaffService {
         return Optional.empty();
     }
 
-    // Delete an staff
-    public boolean deleteStaff(ObjectId id) {
+    // Delete an staff (String ID)
+    public boolean deleteStaff(String id) {
         if (staffRepo.existsById(id)) {
             staffRepo.deleteById(id);
             return true;

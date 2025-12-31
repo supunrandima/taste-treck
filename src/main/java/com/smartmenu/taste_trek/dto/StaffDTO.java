@@ -1,12 +1,11 @@
 package com.smartmenu.taste_trek.dto;
 
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
 
 public record StaffDTO(
-        ObjectId id,
+        String id,
         String firstName,
         String lastName,
         String staffId,

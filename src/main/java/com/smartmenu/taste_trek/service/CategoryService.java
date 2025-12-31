@@ -3,7 +3,6 @@ package com.smartmenu.taste_trek.service;
 import com.smartmenu.taste_trek.dto.CategoryDTO;
 import com.smartmenu.taste_trek.entity.Category;
 import com.smartmenu.taste_trek.repository.CategoryRepo;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -53,7 +52,7 @@ public class CategoryService {
     }
 
     // NEW/MODIFIED: Update Category
-    public Optional<CategoryDTO> updateCategory(ObjectId categoryId, Category updatedCategory) {
+    public Optional<CategoryDTO> updateCategory(String categoryId, Category updatedCategory) {
         return categoryRepo.findById(categoryId).map(existingCategory -> {
 
             // Check for name uniqueness conflict (if name is changed to an existing name of another category)
@@ -79,7 +78,7 @@ public class CategoryService {
     }
 
     // DELETE (Logic already exists, retained for context)
-    public boolean deleteCategory(ObjectId categoryId) {
+    public boolean deleteCategory(String categoryId) {
         if (categoryRepo.existsById(categoryId)) {
             // WARNING: Deletion logic should ideally check if any MenuItems reference this category before deleting.
             categoryRepo.deleteById(categoryId);

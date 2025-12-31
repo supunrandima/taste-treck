@@ -3,7 +3,6 @@ package com.smartmenu.taste_trek.service;
 import com.smartmenu.taste_trek.dto.MenuItemDTO;
 import com.smartmenu.taste_trek.entity.MenuItem;
 import com.smartmenu.taste_trek.repository.MenuItemRepo;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class MenuItemService {
     // --- Helper: Mapping Entity to DTO ---
     private MenuItemDTO mapToResponseDTO(MenuItem item) {
         return new MenuItemDTO(
-                item.getItemId(),
+                item.getItemId(), // No conversion needed
                 item.getItemCode(),
                 item.getName(),
                 item.getCategory(),
@@ -47,8 +46,8 @@ public class MenuItemService {
                 .collect(Collectors.toList());
     }
 
-    // 2. Get Menu Item by ID
-    public Optional<MenuItemDTO> getItemById(ObjectId itemId) {
+    // 2. Get Menu Item by ID (String)
+    public Optional<MenuItemDTO> getItemById(String itemId) {
         return menuItemRepo.findById(itemId)
                 .map(this::mapToResponseDTO);
     }
@@ -70,14 +69,12 @@ public class MenuItemService {
         item.setTimestamps();
 
         // Uniqueness is enforced by @Indexed(unique=true) on 'name' in the Entity.
-        // A save attempt with a duplicate name will throw a MongoWriteException,
-        // which the controller should handle and return 400/409.
         MenuItem savedItem = menuItemRepo.save(item);
         return mapToResponseDTO(savedItem);
     }
 
-    // 5. Update an existing Menu Item
-    public Optional<MenuItemDTO> updateItem(ObjectId itemId, MenuItem updatedItem) {
+    // 5. Update an existing Menu Item (String ID)
+    public Optional<MenuItemDTO> updateItem(String itemId, MenuItem updatedItem) {
         // Check if item exists
         return menuItemRepo.findById(itemId).map(existingItem -> {
 
@@ -104,8 +101,8 @@ public class MenuItemService {
         });
     }
 
-    // 6. Delete a Menu Item
-    public boolean deleteItem(ObjectId itemId) {
+    // 6. Delete a Menu Item (String ID)
+    public boolean deleteItem(String itemId) {
         if (menuItemRepo.existsById(itemId)) {
             menuItemRepo.deleteById(itemId);
             return true;

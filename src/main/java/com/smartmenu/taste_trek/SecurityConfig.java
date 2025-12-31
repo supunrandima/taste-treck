@@ -38,6 +38,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/admin/menu/**").permitAll()
                         .requestMatchers("/api/v1/admin/categories/**").permitAll()
                         .requestMatchers("/api/v1/staff/**").permitAll()
+                        .requestMatchers("/api/v1/order/**").permitAll()
+                        .requestMatchers("/api/v1/otp/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/customer-features/**").permitAll()
 
                         // 3. Allow Actuator endpoints and root path
                         .requestMatchers("/", "/health").permitAll()

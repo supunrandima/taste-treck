@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 
 public record AdminDTO(
-        ObjectId adminId,
+        String adminId,
         String firstName,
         String lastName,
         String userId,

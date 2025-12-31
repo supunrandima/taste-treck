@@ -1,10 +1,9 @@
 package com.smartmenu.taste_trek.dto;
 
-import org.bson.types.ObjectId;
 import java.time.LocalDateTime;
 
 public record MenuItemDTO(
-        ObjectId itemId,
+        String itemId,
         String itemCode,
         String name,
         String category,

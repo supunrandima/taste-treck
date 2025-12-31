@@ -3,7 +3,6 @@ package com.smartmenu.taste_trek.service;
 import com.smartmenu.taste_trek.dto.AdminResponseDTO;
 import com.smartmenu.taste_trek.entity.Admin;
 import com.smartmenu.taste_trek.repository.AdminRepo;
-import org.bson.types.ObjectId;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class AdminService {
     // Helper: map Admin -> AdminResponseDTO
     private AdminResponseDTO mapToResponseDTO(Admin admin) {
         return new AdminResponseDTO(
-                admin.getAdminId(),
+                admin.getAdminId(), // No conversion needed, it's already String
                 admin.getFirstName(),
                 admin.getLastName(),
                 admin.getEmail(),
@@ -46,8 +45,8 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
-    // Get admin by ID
-    public Optional<AdminResponseDTO> getAdminById(ObjectId adminId) {
+    // Get admin by ID (String)
+    public Optional<AdminResponseDTO> getAdminById(String adminId) {
         return adminRepo.findById(adminId)
                 .map(this::mapToResponseDTO);
     }
@@ -72,8 +71,8 @@ public class AdminService {
         return mapToResponseDTO(savedAdmin);
     }
 
-    // Update an existing admin
-    public Optional<AdminResponseDTO> updateAdmin(ObjectId adminId, Admin admin) {
+    // Update an existing admin (String ID)
+    public Optional<AdminResponseDTO> updateAdmin(String adminId, Admin admin) {
         if (adminRepo.existsById(adminId)) {
             admin.setAdminId(adminId);
 
@@ -88,8 +87,8 @@ public class AdminService {
         return Optional.empty();
     }
 
-    // Delete an admin
-    public boolean deleteAdmin(ObjectId adminId) {
+    // Delete an admin (String ID)
+    public boolean deleteAdmin(String adminId) {
         if (adminRepo.existsById(adminId)) {
             adminRepo.deleteById(adminId);
             return true;
@@ -106,6 +105,27 @@ public class AdminService {
 
             if (passwordEncoder.matches(password, admin.getPassword())) {
                 return Optional.of(mapToResponseDTO(admin));
+            }
+        }
+        return Optional.empty();
+    }
+
+    // Authenticate staff (for login) - Keeps using AdminRepo logic
+    public Optional<AdminResponseDTO> authenticateStaff(String userId, String password) {
+        Optional<Admin> adminOpt = adminRepo.findByUserId(userId);
+
+        if (adminOpt.isPresent()) {
+            Admin staff = adminOpt.get();
+
+            // 1. Check password
+            if (passwordEncoder.matches(password, staff.getPassword())) {
+
+                // 2. Check role: MUST be KITCHEN
+                if ("KITCHEN".equalsIgnoreCase(staff.getRole())) {
+                    return Optional.of(mapToResponseDTO(staff));
+                } else {
+                    throw new RuntimeException("Access denied. User role is not 'KITCHEN'.");
+                }
             }
         }
         return Optional.empty();

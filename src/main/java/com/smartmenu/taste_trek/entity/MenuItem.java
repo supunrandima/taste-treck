@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MenuItem {
     @Id
-    private ObjectId itemId;
+    private String itemId;
 
     @NotBlank(message = "Meal name is required")
     @Indexed(unique = true) // Ensures no duplicate meal names
@@ -28,7 +27,7 @@ public class MenuItem {
 
     @NotBlank(message = "Item Code is required")
     @Indexed(unique = true)
-    @Size(min = 4,max = 4)
+    @Size(min = 5,max = 5)
     private String itemCode;
 
     @NotBlank(message = "Category is required")

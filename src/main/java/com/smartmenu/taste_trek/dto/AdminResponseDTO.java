@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 import java.time.LocalDateTime;
 
 public record AdminResponseDTO(
-        ObjectId adminId,
+        String adminId,
         String firstName,
         String lastName,
         String email,

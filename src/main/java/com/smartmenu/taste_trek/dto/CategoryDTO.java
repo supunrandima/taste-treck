@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 import java.time.LocalDateTime;
 
 public record CategoryDTO(
-        ObjectId categoryId,
+        String categoryId,
         String name,
         String categoryCode,
         LocalDateTime createdAt,
